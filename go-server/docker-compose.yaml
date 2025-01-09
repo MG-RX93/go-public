@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  go-server:
+    # build the image from the Dockerfile in the current directory
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app

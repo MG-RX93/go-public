@@ -1,21 +1,20 @@
 # Use the official Golang image as the base image
 FROM golang:1.21-alpine
 
-# Install Git (required to clone the repository)
-RUN apk add --no-cache git
-
 # Set the working directory inside the container
 WORKDIR /app
 
-# Clone the Git repository
-RUN git clone -b project/web-server https://github.com/your-username/go-server.git .
+# Copy the Go module files
+COPY go.mod go.sum ./
 
 # Download and install Go dependencies
-RUN go mod init go-server
-RUN go mod tidy
+RUN go mod download
+
+# Copy the rest of the application code
+COPY . .
 
 # Build the Go application
-RUN go build -o go-server .
+RUN go build -o go-server ./cmd/go-server
 
 # Expose the port your application will run on
 EXPOSE 8080
